@@ -5,7 +5,9 @@ import {
 	generateQRKey,
 	generateQRCode,
 	checkQRCode,
+	getStatus,
 } from "../request/api/home";
+import router from "@/router";
 
 const usePlayListStore = defineStore("playList", {
 	state: () => ({
@@ -42,6 +44,7 @@ const usePlayListStore = defineStore("playList", {
 		duration: 0, // 歌曲总时长
 		isLogin: false, // 是否登录
 		qrCodeBase64: null, // 二维码base64码
+		cookie: null,
 	}),
 	getters: {},
 	actions: {
@@ -82,23 +85,41 @@ const usePlayListStore = defineStore("playList", {
 			let resCode = await generateQRCode(resKey.data.data.unikey);
 			console.log(resCode);
 			this.qrCodeBase64 = resCode.data.data.qrimg;
-			setInterval(async () => {
+			let timer = setInterval(async () => {
+				if (this.cookie) {
+					console.log("清除定时器");
+					clearInterval(timer);
+					// this.updateStatus();
+				}
 				if (showQRCode) {
 					const response = await checkQRCode(resKey.data.data.unikey);
 					console.log(response, "000");
 					const status = response.data.code;
 					if (status === 803) {
 						// 用户已登录成功，获取 cookies
-						const cookies = response.data.cookie;
+						const cookie = response.data.cookie;
 						// 存储 cookies 或执行其他操作
-						console.log("登录成功", cookies);
-						return cookies;
+						console.log("登录成功", cookie);
+						this.cookie = cookie;
+						sessionStorage.setItem("cookie", cookie);
+						this.isLogin = true;
+						router.push("home");
 					} else {
 						console.log("继续轮询扫码状态", response.data.message);
 					}
 				}
 			}, 2000); // 每2秒轮询一次
 		},
+		updateStatus: async function () {
+			let cookie = sessionStorage.getItem("cookie");
+			let res = await getStatus(cookie);
+			console.log(res);
+		},
+		// getMusic: async function (id) {
+		// 	let res = await getMusicUrl(id);
+		// 	console.log(res.data.data[0].url);
+		// 	return res.data.data[0].url;
+		// },
 	},
 });
 export default usePlayListStore;

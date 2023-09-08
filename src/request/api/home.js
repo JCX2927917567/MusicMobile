@@ -41,3 +41,17 @@ export function checkQRCode(key) {
 		url: `/login/qr/check?key=${key}&timerstamp=${new Date().getTime()}`,
 	});
 }
+// 获取登录之后的状态
+export function getStatus(cookie) {
+	return service({
+		method: "GET",
+		url: `/login/status?cookie=${cookie}`,
+	});
+}
+// 获取歌曲地址
+// export function getMusicUrl(id) {
+// 	return service({
+// 		method: "GET",
+// 		url: `/song/url?id=${id}`,
+// 	});
+// }

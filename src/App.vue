@@ -5,6 +5,17 @@
 
 <script setup>
 import FooterMusic from "@/components/musicitem/FooterMusic";
+
+import usePlayListStore from "@/store/playList";
+import { nextTick, onMounted } from "vue";
+
+const usePlayList = usePlayListStore();
+
+onMounted(() => {
+	nextTick();
+	usePlayList.cookie = sessionStorage.getItem("cookie");
+	usePlayList.updateStatus();
+});
 </script>
 
 <style lang="less">

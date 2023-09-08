@@ -47,14 +47,7 @@ const routes = [
 		name: "infoUser",
 		meta: {
 			title: "个人中心",
-		},
-		beforeEnter: (to, from, next) => {
-			const useStore = usePlayListStore();
-			if (useStore.isLogin) {
-				next();
-			} else {
-				next("/login");
-			}
+			requireLogin: true,
 		},
 		component: () => import("@/views/infoUser"),
 	},
@@ -69,8 +62,14 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
 	if (to.meta.title) {
 		document.title = to.meta.title;
+		if (!to.meta.requireLogin || sessionStorage.getItem("cookie")) {
+			next();
+		} else {
+			next("/login");
+		}
+	} else {
+		next();
 	}
-	next();
 });
 
 // 导出路由

@@ -18,7 +18,6 @@ import SwipeBanner from "@/components/home/SwipeBanner";
 import HorizenScrollMenu from "@/components/home/HorizenScrollMenu";
 import MusicList from "@/components/home/MusicList.vue";
 import Tabbar from "@/components/home/Tabbar.vue";
-import { RouterView } from "vue-router";
 </script>
 
 <style lang="less" scoped></style>

@@ -44,7 +44,7 @@ let loginInfo = reactive({
 });
 async function codeLogin() {
 	showQRCode.value = true;
-	const cookie = await usePlayList.pollQRStatus(showQRCode.value);
+	usePlayList.pollQRStatus(showQRCode.value);
 }
 </script>
 
