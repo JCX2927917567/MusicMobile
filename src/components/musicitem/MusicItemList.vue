@@ -54,7 +54,6 @@
 
 <script setup>
 import usePlayListStore from "@/store/playList";
-
 const usePlayList = usePlayListStore();
 const props = defineProps({
 	songs: {

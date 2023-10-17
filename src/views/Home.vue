@@ -8,7 +8,6 @@
 		<horizen-scroll-menu />
 		<!-- 歌单推荐 -->
 		<MusicList />
-		<Tabbar />
 	</div>
 </template>
 

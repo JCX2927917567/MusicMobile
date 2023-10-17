@@ -1,5 +1,5 @@
 <template>
-	<van-tabbar route border="false">
+	<van-tabbar route v-show="$route.meta.hasTabber">
 		<van-tabbar-item to="/home">
 			<span>发现</span>
 			<template #icon="props">
@@ -10,7 +10,7 @@
 				</svg>
 			</template>
 		</van-tabbar-item>
-		<van-tabbar-item to="/player">
+		<van-tabbar-item to="/podcast">
 			<span>播客</span>
 			<template #icon="props">
 				<svg class="icon" aria-hidden="true">
@@ -32,7 +32,7 @@
 				</svg>
 			</template>
 		</van-tabbar-item>
-		<van-tabbar-item to="/follow">
+		<van-tabbar-item to="/concern">
 			<span>关注</span>
 			<template #icon="props">
 				<svg class="icon" aria-hidden="true">
@@ -44,7 +44,7 @@
 				</svg>
 			</template>
 		</van-tabbar-item>
-		<van-tabbar-item to="/chat">
+		<van-tabbar-item to="/community">
 			<span>社区</span>
 			<template #icon="props">
 				<svg class="icon" aria-hidden="true">

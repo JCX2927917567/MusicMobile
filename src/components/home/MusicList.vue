@@ -21,8 +21,8 @@
 				:show-indicators="false"
 			>
 				<van-swipe-item v-for="item in state.musicList" :key="item.id">
-					<RouterLink :to="{ path: '/musicitem', query: { id: item.id } }">
-						<img :src="item.picUrl" alt="" />
+					<router-link :to="{ path: '/musicItem', query: { id: item.id } }">
+						<img v-img-lazy="item.picUrl" alt="" />
 						<span class="playCount">
 							<svg class="icon" aria-hidden="true">
 								<use xlink:href="#icon-play"></use>
@@ -35,7 +35,7 @@
 						<span class="name">
 							{{ item.name }}
 						</span>
-					</RouterLink>
+					</router-link>
 				</van-swipe-item>
 			</van-swipe>
 		</div>

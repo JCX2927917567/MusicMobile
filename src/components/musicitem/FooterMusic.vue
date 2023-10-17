@@ -45,6 +45,7 @@
 			:list="playList[playListIndex]"
 			:play="play"
 			:addDuration="addDuration"
+			:audio="audio"
 		/>
 	</van-popup>
 </template>

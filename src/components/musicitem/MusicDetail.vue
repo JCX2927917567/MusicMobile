@@ -98,12 +98,14 @@
 			<div class="slider">
 				{{ timeFormat(currentTime) }}
 				<input
+					ref="range"
 					type="range"
 					class="range"
 					min="0"
 					:max="duration"
 					step="0.05"
 					v-model="currentTime"
+					@input="seekAudio"
 				/>
 				{{ timeFormat(duration) }}
 			</div>
@@ -128,18 +130,51 @@
 				<svg class="icon" aria-hidden="true" @click="next()">
 					<use xlink:href="#icon-xiayishou"></use>
 				</svg>
-				<svg class="icon" aria-hidden="true">
+				<svg class="icon" aria-hidden="true" @click="showBottom = true">
 					<use xlink:href="#icon-24gl-playlistMusic3"></use>
 				</svg>
 			</div>
 		</div>
 	</div>
+	<!-- 底部弹出 -->
+	<van-popup
+		v-model:show="showBottom"
+		position="bottom"
+		round
+		:style="{ height: '70%' }"
+	>
+		<div class="pace"><div class="listTop">播放列表</div></div>
+		<div class="songsList">
+			<div v-if="playList" class="list">
+				<div
+					v-for="(song, index) in playList"
+					:key="song.id"
+					class="listItem"
+					@click="playMusic(index)"
+				>
+					<div class="song" :class="index === playListIndex ? 'active' : ''">
+						<span class="songName">{{ song.name }}&nbsp;·&nbsp;</span>
+						<span class="singers">
+							<template v-for="(item, i) in song.ar" :key="item.id">
+								<template v-if="i + 1 !== song.ar.length"
+									>{{ item.name }}/</template
+								>
+								<template v-else>{{ item.name }}</template>
+							</template>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</van-popup>
 </template>
 
 <script setup>
 import usePlayListStore from "@/store/playList";
 import { storeToRefs } from "pinia";
 import { computed, watch, ref, onMounted, onUpdated } from "vue";
+const range = ref(null);
+const showBottom = ref(false);
 const props = defineProps({
 	list: {
 		type: Object,
@@ -153,8 +188,18 @@ const props = defineProps({
 		type: Function,
 		required: true,
 	},
+	audio: {
+		type: Object,
+	},
 });
 const musicLyric = ref(null);
+
+/**点击切换歌曲 */
+function playMusic(value) {
+	usePlayList.updatePlayList(playList.value);
+	usePlayList.updatePlayListIndex(value);
+}
+
 onMounted(() => {
 	props.addDuration();
 });
@@ -200,11 +245,11 @@ function timeFormat(e) {
 	const result = `${padTo2Digits(minutes)}:${padTo2Digits(seconds)}`;
 	return result;
 }
-
+/**歌曲时间转换 */
 function padTo2Digits(num) {
 	return num.toString().padStart(2, "0");
 }
-
+/**歌词处理 */
 const lyric = computed(() => {
 	let arr;
 	if (lyricList.value) {
@@ -240,6 +285,7 @@ const lyric = computed(() => {
 	console.log(arr);
 	return arr;
 });
+/**歌词滚动 */
 watch(currentTime, () => {
 	let p = document.querySelector("p.active");
 	// console.log([p]);
@@ -254,6 +300,12 @@ watch(currentTime, () => {
 		}
 	}
 });
+
+/**歌曲播放进度拖拽 */
+const seekAudio = () => {
+	const audio = props.audio;
+	audio.currentTime = range.value.value;
+};
 </script>
 
 <style lang="less" scoped>
@@ -443,6 +495,67 @@ watch(currentTime, () => {
 		.icon-play {
 			width: 42px;
 			height: 42px;
+		}
+	}
+}
+.pace {
+	height: 60px;
+	width: 100%;
+	.listTop {
+		width: 100%;
+		padding: 10px 0;
+		text-align: center;
+		border-bottom: 1px solid rgba(51, 51, 51, 0.2);
+		position: fixed;
+		border-radius: 16px 16px 0 0;
+		background-color: #fff;
+	}
+}
+.list {
+	.listItem {
+		display: flex;
+		width: 100%;
+		height: 60px;
+		justify-content: space-between;
+		padding-right: 16px;
+		.no {
+			display: flex;
+			height: 100%;
+			width: 48px;
+			align-items: center;
+			justify-content: center;
+			color: #999999;
+			font-size: 16px;
+		}
+		.song {
+			display: flex;
+			flex: 1;
+			align-items: center;
+			&.active {
+				color: red;
+				.songName {
+					color: red;
+				}
+				.singers {
+					color: red;
+				}
+			}
+			.songName {
+				font-size: 16px;
+				max-width: 100vw;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				color: #333333;
+			}
+			.singers {
+				width: 282px;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				font-size: 12px;
+				color: #999999;
+			}
 		}
 	}
 }

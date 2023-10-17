@@ -1,21 +1,23 @@
 <template>
-	<div class="searchTop">
-		<div class="searchLeft" @click="onClickLeft()">
-			<svg class="icon" aria-hidden="true">
-				<use xlink:href="#icon-xitongfanhui"></use>
-			</svg>
+	<div class="topBox">
+		<div class="searchTop">
+			<div class="searchLeft" @click="onClickLeft()">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#icon-xitongfanhui"></use>
+				</svg>
+			</div>
+			<van-search
+				v-model="secrchVal"
+				show-action
+				placeholder="请输入搜索关键词"
+				shape="round"
+				@search="searchKey()"
+			>
+				<template #action>
+					<div @click="searchKey()">搜索</div>
+				</template>
+			</van-search>
 		</div>
-		<van-search
-			v-model="secrchVal"
-			show-action
-			placeholder="请输入搜索关键词"
-			shape="round"
-			@search="searchKey()"
-		>
-			<template #action>
-				<div @click="searchKey()">搜索</div>
-			</template>
-		</van-search>
 	</div>
 	<div class="searchHistory">
 		<div class="searchTitle">
@@ -133,16 +135,22 @@ function updateIndex(item) {
 </script>
 
 <style lang="less" scoped>
-.searchTop {
-	display: flex;
-	width: 100%;
+.topBox {
 	height: 44px;
-	padding: 0 8px;
-	align-items: center;
-	justify-content: center;
-	.searchLeft {
+	.searchTop {
+		position: fixed;
+		z-index: 999;
+		background: #fff;
 		display: flex;
+		width: 100%;
+		height: 44px;
+		padding: 0 8px;
 		align-items: center;
+		justify-content: center;
+		.searchLeft {
+			display: flex;
+			align-items: center;
+		}
 	}
 }
 .van-search {

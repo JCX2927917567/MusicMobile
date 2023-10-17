@@ -1,6 +1,6 @@
 // 底部播放组件歌曲列表
 import { defineStore } from "pinia";
-import { getMusicLyric } from "../request/api/musicItem";
+import { getMusicLyric, getDayRecommend } from "../request/api/musicItem";
 import {
 	generateQRKey,
 	generateQRCode,
@@ -40,6 +40,7 @@ const usePlayListStore = defineStore("playList", {
 		detailShow: false, // 详情页展示
 		lyricList: {}, // 歌词
 		isLyricShow: false,
+		loading: false,
 		currentTime: 0, // 当前时间
 		duration: 0, // 歌曲总时长
 		isLogin: false, // 是否登录
@@ -99,11 +100,11 @@ const usePlayListStore = defineStore("playList", {
 						// 用户已登录成功，获取 cookies
 						const cookie = response.data.cookie;
 						// 存储 cookies 或执行其他操作
-						console.log("登录成功", cookie);
+						// console.log("登录成功", cookie);
 						this.cookie = cookie;
 						sessionStorage.setItem("cookie", cookie);
 						this.isLogin = true;
-						router.push("home");
+						router.push("/home");
 					} else {
 						console.log("继续轮询扫码状态", response.data.message);
 					}
@@ -114,6 +115,11 @@ const usePlayListStore = defineStore("playList", {
 			let cookie = sessionStorage.getItem("cookie");
 			let res = await getStatus(cookie);
 			console.log(res);
+		},
+		// 每日推荐歌曲
+		getDayRecommend: async function () {
+			const res = await getDayRecommend(this.cookie);
+			return res.data.data.dailySongs;
 		},
 		// getMusic: async function (id) {
 		// 	let res = await getMusicUrl(id);

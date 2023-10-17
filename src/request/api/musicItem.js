@@ -4,6 +4,7 @@ export function getMusicItem(id) {
 	return service({
 		method: "GET",
 		url: `/playlist/detail?id=${id}`,
+		showLoading: true,
 	});
 }
 
@@ -12,6 +13,7 @@ export function getMusicItemList(id) {
 	return service({
 		method: "GET",
 		url: `/playlist/track/all?id=${id}`,
+		showLoading: true,
 	});
 }
 
@@ -20,5 +22,15 @@ export function getMusicLyric(id) {
 	return service({
 		method: "GET",
 		url: `/lyric?id=${id}`,
+		showLoading: false,
+	});
+}
+
+// 获取每日推荐歌曲
+export function getDayRecommend(cookie) {
+	return service({
+		method: "GET",
+		url: `/recommend/songs?cookie=${cookie}`,
+		showLoading: true,
 	});
 }

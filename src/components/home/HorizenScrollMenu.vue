@@ -2,7 +2,12 @@
 	<div class="container">
 		<div class="scroll-wrapper" ref="scroll">
 			<div class="scroll-content" ref="content">
-				<div class="scroll-item" v-for="item in menus" :key="item.id">
+				<div
+					@click="$router.push(item.path)"
+					class="scroll-item"
+					v-for="item in menus"
+					:key="item.id"
+				>
 					<svg class="icon" aria-hidden="true">
 						<use :xlink:href="'#' + item.ico"></use>
 					</svg>
@@ -24,17 +29,17 @@ BScroll.use(ObserveDom);
 import { onMounted, ref } from "vue";
 // 菜单数组
 const menus = [
-	{ id: 1, ico: "icon-meirituijian1", name: "每日推荐" },
-	{ id: 2, ico: "icon-diantai", name: "私人FM" },
-	{ id: 3, ico: "icon-gedan", name: "歌单" },
-	{ id: 4, ico: "icon-paihangbang1", name: "排行榜" },
-	{ id: 5, ico: "icon-shuben", name: "有声书" },
-	{ id: 6, ico: "icon-zhuanji", name: "数字专辑" },
-	{ id: 7, ico: "icon-fuwuzhibo_huaban", name: "直播" },
-	{ id: 8, ico: "icon-guanzhu", name: "关注新歌" },
-	{ id: 9, ico: "icon-yinle-", name: "一歌一遇" },
-	{ id: 10, ico: "icon-shoucang1", name: "收藏家" },
-	{ id: 11, ico: "icon-youxi", name: "游戏专区" },
+	{ id: 1, ico: "icon-meirituijian1", name: "每日推荐", path: "/daySongs" },
+	{ id: 2, ico: "icon-diantai", name: "私人FM", path: "" },
+	{ id: 3, ico: "icon-gedan", name: "歌单", path: "" },
+	{ id: 4, ico: "icon-paihangbang1", name: "排行榜", path: "" },
+	{ id: 5, ico: "icon-shuben", name: "有声书", path: "" },
+	{ id: 6, ico: "icon-zhuanji", name: "数字专辑", path: "" },
+	{ id: 7, ico: "icon-fuwuzhibo_huaban", name: "直播", path: "" },
+	{ id: 8, ico: "icon-guanzhu", name: "关注新歌", path: "" },
+	{ id: 9, ico: "icon-yinle-", name: "一歌一遇", path: "" },
+	{ id: 10, ico: "icon-shoucang1", name: "收藏家", path: "" },
+	{ id: 11, ico: "icon-youxi", name: "游戏专区", path: "" },
 ];
 const innerLeft = ref("0rem");
 const scroll = ref(null);
@@ -51,6 +56,7 @@ onMounted(() => {
 		scrollX: true,
 		scrollY: false,
 		observeDOM: true,
+		click: true,
 	});
 	const onScroll = (position) => {
 		// console.log(position, '////');

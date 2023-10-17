@@ -1,10 +1,13 @@
 <template>
 	<router-view />
 	<FooterMusic />
+	<Tabbar />
+	<Loading />
 </template>
 
 <script setup>
 import FooterMusic from "@/components/musicitem/FooterMusic";
+import Loading from "@/components/home/Loading";
 
 import usePlayListStore from "@/store/playList";
 import { nextTick, onMounted } from "vue";
@@ -31,5 +34,8 @@ onMounted(() => {
 }
 a {
 	color: black;
+}
+::-webkit-scrollbar {
+	display: none;
 }
 </style>
